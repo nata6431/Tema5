@@ -60,46 +60,32 @@
 </head>
 
 <body>
-
-
-    <div id="liste">
-
-
-    </div>
     <div class="center">
         <h1>Personliste</h1>
     </div>
 
     <div id="personer">
+
     </div>
 
-
     <script>
-        let personer = [];
-        let filter = "b";
         document.addEventListener("DOMContentLoaded", start);
 
         function start() {
-            let dest = document.querySelector("#liste");
+            let personer = [];
+            let filter = "b";
             async function getJson() {
                 let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
                 personer = await jsonData.json();
                 visPersoner();
             }
-
+            console.log(personer);
 
             function visPersoner() {
-                personer.forEach(person => {
-                    if (person.hold == filter) {
-                        dest.innerHTML += `
-<div class="personer">
-<h2>${person.navn}</h2>
-<img class="billede" src"${person.billede}" alt="${person.navn}">
-<p>hold: ${person.hold}</p>
-
-
-
-
+                personer.forEach(personer => {
+                    if (personer.hold == filter) {
+                        document.querySelector("#personer").innerHTML +=
+                            `<div class="vis">
 <div>
 
 <img src="${personer.billede}"</p>
@@ -114,37 +100,10 @@ target_blank><b>Github</b></a>
 <p><b>Hold:</b> ${personer.hold}</p>
 </div>
 
-        </div>
-                `;
+        </div>`
                     }
-
-                })
-
+                });
             }
-
-            <
-            div >
-
-                <
-                img src = "${personer.billede}" < /p> <
-                /div> <
-                div >
-                <
-                h2 > $ {
-                    personer.navn
-                } < /h2> <
-                a href = "https://github.com/${personer.github}"
-            target_blank > < b > Github < /b></a >
-                <
-                p > < b > Alder: < /b> ${personer.alder}</p >
-                <
-                p > < b > Køn: < /b> ${personer.køn}</p >
-                <
-                p > < b > Email: < /b> ${personer.email}</p >
-                <
-                p > < b > Hold: < /b> ${personer.hold}</p >
-                <
-                /div>
             getJson();
         }
     </script>
