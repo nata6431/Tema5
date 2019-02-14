@@ -4,55 +4,106 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personliste</title>
+    <title>Babushka</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
 
     <link rel="stylesheet" href="">
     <link href="https://fonts.googleapis.com/css?family=Major+Mono+Display" rel="stylesheet">
     <style>
         body {
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'Felipa', cursive;
 
-            background-color: #ffce75;
+            background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+
         }
 
         #mad {
             display: grid;
             grid-template-columns: auto auto;
-            margin: 0 auto;
-        }
 
-        .vis {
-            font-family: 'Roboto Mono', monospace;
-
-            background: rgb(252, 218, 104);
-            width: 80%;
-            display: grid;
             grid-template-columns: 1fr 1fr;
-            align-items: center;
-            padding: 1vw;
-            margin: 1vw auto;
-            box-shadow: rgba(0, 0, 0, .15) 0 1rem 2.8rem 0;
-            border-radius: 2rem;
-        }
 
-        .center {
             text-align: center;
-            font-size: 300%;
-            font-weight: 900;
+            background-color: rgb(242, 233, 237);
+
+
+
         }
 
-        .vis img {
-            width: 90%;
-            border-radius: 2rem;
+
+        h2 {
+            text-align: center;
+            font-size: 500%;
+            font-weight: 1000;
+            font-family: 'Coiny', cursive;
+            margin-left: 0;
+            margin-bottom: 0;
+            margin-top: 1.5;
         }
 
-        a {
-            color: black;
+        .menu {
+            text-align: center;
+
         }
+
+        h1 {
+            text-align: center;
+
+
+
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 2.5vw
+        }
+
 
         .valgt {
-            background: #ababe6;
+            background: white;
+        }
+
+        #popup {
+            display: none;
+            width: 75vw;
+            height: 50vw;
+            position: fixed;
+            left: 12vw;
+            background: white;
+
+
+        }
+
+        button {
+            background-color: rgb(242, 233, 237);
+            border: 1px solid white;
+            margin: 7px;
+            height: 5vw;
+            width: 13vw;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-radius: 2px;
+            font-family: 'Felipa', cursive;
+            font-size: 2vw
+        }
+
+        #indhold {
+            box-sizing: border-box;
+            background-color: rgb(242, 233, 237);
+            width: 73vw;
+            height: 44vw;
+            margin: auto;
+            text-align: center;
+        }
+
+        #luk {
+            box-sizing: border-box;
+            text-align: right;
+            padding-right: 1em;
+        }
+
+        #luk button {
+            font-size: 2em;
         }
     </style>
 
@@ -64,68 +115,92 @@
 </head>
 
 <body>
-    <div class="center">
-        <h2>Personliste</h2>
+    <div id="popup">
+        <div id="luk"><button>X</button></div>
+        <div id="indhold"></div>
+    </div>
+    <div id="head">
+        <h2>Bistro Babushka</h2>
     </div>
     <h1>Alle</h1>
     <div class="menu">
-        <button class="filter" data-hold="alle">Alle</button>
-        <button class="filter" data-hold="forretter">forretter</button>
-        <button class="filter" data-hold="hovedretter">hovedretter</button>
-        <button class="filter" data-hold="desserter">desserter</button>
-        <button class="filter" data-hold="drikkevarer">drikkevarer</button>
+        <button class="filter valgt" data-kategori="alle">Alle</button>
+        <button class="filter" data-kategori="forretter">Forretter</button>
+        <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+        <button class="filter" data-kategori="desserter">Desserter</button>
+        <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
     </div>
 
 
 
-    <div id="mad">
+    <section id="mad">
 
-    </div>
+    </section>
 
     <script>
+        let AlleMad = [];
+        let filter = "alle";
+
         document.addEventListener("DOMContentLoaded", start);
 
         function start() {
-            let mad = [];
-            let filter = "alle";
+            let dest = document.querySelector("#mad");
             async function getJson() {
                 let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
-                mad = await jsonData.json();
+                alleMad = await jsonData.json();
 
+                alleMad.sort((a, b) => {
+                    return a.navn.localeCompare(b.navn);
+                })
+                visMad();
             }
-            visMad();
-
-            console.log(mad);
 
             function visMad() {
-                document.querySelector("#mad").innerHTML = "";
-                mad.forEach(mad => {
-                    if (filter == "alle" || filter == mad.hold) {
+                dest.innerHTML = "";
+                alleMad.forEach(mad => {
+                    if (filter == "alle" || filter == mad.kategori) {
+                        let template = `
+                            <article class="mad">
+                            <h3>${mad.navn}</h3>
+                        <img src="small/${mad.billede}-sm.jpg"</p>
 
-                        document.querySelector("#mad").innerHTML +=
-                            `<div class="vis">
-<div>
+                            <p>Pris: ${mad.pris}</p>
+                            <p>Beskrivelse: ${mad.kort}</p>
 
-<img src="small/${mad.billede}-sm.jpg"</p>
-</div>
-<div>
- <h2>${mad.navn}</h2>
-<p><b>Pris:</b> ${mad.pris}</p>
-<p><b>Kort besrivelse:</b> ${mad.kort}</p>
-<p><b>Lang beskrivelse:</b> ${mad.lang}</p>
-<p><b>Oprindelse:</b> ${mad.oprindelse}</p>
-</div>
 
-        </div>`
+                        </article>
+                        `;
+                        dest.insertAdjacentHTML("beforeend", template);
+                        dest.lastElementChild.addEventListener("click", åbn);
+
+                        function åbn() {
+                            document.querySelector("#indhold").innerHTML = `
+                            <article class="mad">
+                            <h3>${mad.navn}</h3>
+                       <img src="small/${mad.billede}-sm.jpg"</p>
+                            <p>Pris: ${mad.pris}</p>
+
+   <p>Oprindelse: ${mad.oprindelse}</p>
+  <p>Beskrivelse: ${mad.lang}</p>
+
+
+                        </article>
+                        `;
+                            document.querySelector("#popup").style.display = "block";
+                        }
                     }
-                });
+                })
             }
+            //function visPersoner slut
+            document.querySelector("#luk button").addEventListener("click", () => {
+                document.querySelector("#popup").style.display = "none";
+            })
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.addEventListener("click", filtrering);
             })
 
             function filtrering() {
-                filter = this.getAttribute("data-hold");
+                filter = this.getAttribute("data-kategori");
                 document.querySelector("h1").textContent = this.textContent;
                 document.querySelectorAll(".filter").forEach(elm => {
                     elm.classList.remove("valgt");
@@ -137,5 +212,6 @@
         }
     </script>
 </body>
+
 
 </html>
