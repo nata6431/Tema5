@@ -9,75 +9,92 @@
 </head>
 
 <style>
-
     body {
         background-color: #ffba00;
-        font-family: roboto;
+       font-family: 'Poppins', sans-serif;
     }
+
     .personer {
         border: 1px solid white;
         margin: 10px;
         padding: 10px;
-        color: black;;
+        color: black;
         background-color: #f7f7c6;
     }
+
     #liste {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
     }
+
+
     img {
         display: block;
         max-width: 150px;
         margin-left: auto;
         margin-right: auto;
     }
+
     h2 {
         color: black;
         text-align: center;
     }
+
     h1 {
         text-align: center;
     }
+
     .menu {
         text-align: center;
 
     }
+
+
     button {
-        background-color: #c4c4f8;
+        background-color: #9ee59e;
         border: 1px solid white;
         margin: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-        border-radius: 2px;
         height: 3vw;
         width: 7vw;
+          padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 2px;
 
     }
+
     .valgt {
-        background-color: #ffdaf3;
-        color: white;
+        background-color: #83af83;
+        color: black;
         border: 1px solid white;
         font-weight: 900;
     }
+
     #popup {
         display: none;
-        width: 100vw;
-        height: 100vw;
+        width: 75vw;
+        height: 75vw;
         position: fixed;
-        background-color: #efc3e1;
+        left: 12vw;
+        background-color: #9ee59e;
+
+
     }
+
     #indhold {
         box-sizing: border-box;
         background-color: #c4c4f8;
-        width: 90vw;
-        height: 90vw;
+        width: 70vw;
+        height: 70vw;
         margin: auto;
+        align-content: center;
     }
+
     #luk {
         box-sizing: border-box;
         text-align: right;
         padding-right: 1em;
     }
+
     #luk button {
         font-size: 2em;
     }
@@ -110,6 +127,7 @@
         let allePersoner = [];
         let filter = "alle";
         document.addEventListener("DOMContentLoaded", start);
+
         function start() {
             let dest = document.querySelector("#liste");
             async function getJson() {
@@ -123,6 +141,7 @@
                 })
                 visPersoner();
             }
+
             function visPersoner() {
                 dest.innerHTML = "";
                 allePersoner.forEach(personer => {
@@ -141,6 +160,7 @@
                         `;
                         dest.insertAdjacentHTML("beforeend", template);
                         dest.lastElementChild.addEventListener("click", åbn);
+
                         function åbn() {
                             document.querySelector("#indhold").innerHTML = `
                             <article class="personer">
@@ -160,9 +180,13 @@
                 })
             }
             //function visPersoner slut
+            document.querySelector("#luk button").addEventListener("click", () => {
+                document.querySelector("#popup").style.display = "none";
+            })
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.addEventListener("click", filtrering);
             })
+
             function filtrering() {
                 filter = this.getAttribute("data-hold");
                 document.querySelector("h1").textContent = this.textContent;

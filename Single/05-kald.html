@@ -9,91 +9,74 @@
 </head>
 
 <style>
-
     body {
         background-color: #ffba00;
-        font-family: roboto;
+        font-family: 'Poppins', sans-serif;
     }
+
     .personer {
         border: 1px solid white;
         margin: 10px;
         padding: 10px;
-        color: black;;
+        color: black;
         background-color: #f7f7c6;
     }
+
     #liste {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
     }
+
+
     img {
         display: block;
         max-width: 150px;
         margin-left: auto;
         margin-right: auto;
     }
+
     h2 {
         color: black;
         text-align: center;
     }
+
     h1 {
         text-align: center;
     }
+
     .menu {
         text-align: center;
 
     }
+
+
     button {
-        background-color: #c4c4f8;
+        background-color: #9ee59e;
         border: 1px solid white;
         margin: 5px;
+        height: 3vw;
+        width: 7vw;
         padding-left: 10px;
         padding-right: 10px;
         border-radius: 2px;
-        height: 3vw;
-        width: 7vw;
 
     }
+
     .valgt {
-        background-color: #ffdaf3;
-        color: white;
+        background-color: #83af83;
+        color: black;
         border: 1px solid white;
         font-weight: 900;
-    }
-    #popup {
-        display: none;
-        width: 100vw;
-        height: 100vw;
-        position: fixed;
-        background-color: #efc3e1;
-    }
-    #indhold {
-        box-sizing: border-box;
-        background-color: #c4c4f8;
-        width: 90vw;
-        height: 90vw;
-        margin: auto;
-    }
-    #luk {
-        box-sizing: border-box;
-        text-align: right;
-        padding-right: 1em;
-    }
-    #luk button {
-        font-size: 2em;
     }
 </style>
 
 
 
 <body>
-    <div id="popup">
-        <div id="luk"><button>X</button></div>
-        <div id="indhold"></div>
-    </div>
+
 
     <h1>Alle</h1>
     <header>
-
         <nav class="menu">
             <button class="filter valgt" data-hold="alle">Alle</button>
             <button class="filter" data-hold="a">Hold A</button>
@@ -110,6 +93,7 @@
         let allePersoner = [];
         let filter = "alle";
         document.addEventListener("DOMContentLoaded", start);
+
         function start() {
             let dest = document.querySelector("#liste");
             async function getJson() {
@@ -123,6 +107,7 @@
                 })
                 visPersoner();
             }
+
             function visPersoner() {
                 dest.innerHTML = "";
                 allePersoner.forEach(personer => {
@@ -140,22 +125,9 @@
                         </article>
                         `;
                         dest.insertAdjacentHTML("beforeend", template);
-                        dest.lastElementChild.addEventListener("click", åbn);
-                        function åbn() {
-                            document.querySelector("#indhold").innerHTML = `
-                            <article class="personer">
-                            <h2>${personer.navn}</h2>
-                            <img src="${personer.billede}" alt="${personer.navn}">
-                            <p>Github: <a target="_blank" href="http://github.com/${personer.github}">${personer.github}</a></p>
-                            <p>Alder: ${personer.alder}</p>
-                            <p>Køn: ${personer.køn}</p>
-                            <p>Email: ${personer.email}</p>
-                            <p>Hold: ${personer.hold}</p>
-                            <p>Historie: ${personer.historie}</p>
-                        </article>
-                        `;
-                            document.querySelector("#popup").style.display = "block";
-                        }
+                        dest.lastElementChild.addEventListener("click", () => {
+                            location.href = "07-singleView.html?github=" + personer.github;
+                        });
                     }
                 })
             }
@@ -163,6 +135,7 @@
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.addEventListener("click", filtrering);
             })
+
             function filtrering() {
                 filter = this.getAttribute("data-hold");
                 document.querySelector("h1").textContent = this.textContent;
